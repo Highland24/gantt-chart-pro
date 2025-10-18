@@ -1,0 +1,47 @@
+{
+  "name": "Gantt Chart Pro",
+  "short_name": "GanttPro",
+  "description": "Offline-first project management with Gantt charts. Complete privacy, all data stays on your device.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#667eea",
+  "orientation": "any",
+  "scope": "./",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "categories": ["productivity", "business"],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "New Project",
+      "short_name": "New",
+      "description": "Create a new Gantt chart project",
+      "url": "./index.html?action=new",
+      "icons": [
+        {
+          "src": "icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,2139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="manifest" href="manifest.json">
+   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#667eea">
+    <meta name="description" content="Offline-capable project management with Gantt charts">
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkdhbnR0IENoYXJ0IFBybyIsCiAgInNob3J0X25hbWUiOiAiR2FudHRQcm8iLAogICJkZXNjcmlwdGlvbiI6ICJPZmZsaW5lLWNhcGFibGUgcHJvamVjdCBtYW5hZ2VtZW50IHdpdGggR2FudHQgY2hhcnRzIiwKICAic3RhcnRfdXJsIjogIi4vIiwKICAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjZmZmZmZmIiwKICAidGhlbWVfY29sb3IiOiAiIzY2N2VlYSIsCiAgImljb25zIjogWwogICAgewogICAgICAic3JjIjogImRhdGE6aW1hZ2Uvc3ZnK3htbCwlM0NzdmcgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnJyB3aWR0aD0nMTkyJyBoZWlnaHQ9JzE5Micgdmlld0JveD0nMCAwIDEwMCAxMDAnJTNFJTNDcmVjdCB3aWR0aD0nMTAwJyBoZWlnaHQ9JzEwMCcgZmlsbD0nJTIzNjY3ZWVhJy8lM0UlM0N0ZXh0IHg9JzUwJyB5PSc1MCcgZm9udC1mYW1pbHk9J0FyaWFsJyBmb250LXNpemU9JzQwJyBmaWxsPSd3aGl0ZScgdGV4dC1hbmNob3I9J21pZGRsZScgZHk9Jy4zZW0nJTNFRyUzQy90ZXh0JTNFJTNDL3N2ZyUzRSIsCiAgICAgICJzaXplcyI6ICIxOTJ4MTkyIiwKICAgICAgInR5cGUiOiAiaW1hZ2Uvc3ZnK3htbCIKICAgIH0sCiAgICB7CiAgICAgICJzcmMiOiAiZGF0YTppbWFnZS9zdmcreG1sLCUzQ3N2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc1MTInIGhlaWdodD0nNTEyJyB2aWV3Qm94PScwIDAgMTAwIDEwMCclM0UlM0NyZWN0IHdpZHRoPScxMDAnIGhlaWdodD0nMTAwJyBmaWxsPSclMjM2NjdlZWEnLyUzRSUzQ3RleHQgeD0nNTAnIHk9JzUwJyBmb250LWZhbWlseT0nQXJpYWwnIGZvbnQtc2l6ZT0nNDAnIGZpbGw9J3doaXRlJyB0ZXh0LWFuY2hvcj0nbWlkZGxlJyBkeT0nLjNlbSclM0VHJTNDL3RleHQlM0UlM0Mvc3ZnJTNFIiwKICAgICAgInNpemVzIjogIjUxMng1MTIiLAogICAgICAidHlwZSI6ICJpbWFnZS9zdmcreG1sIgogICAgfQogIF0KfQ==">
+    <title>Gantt Chart Pro</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 15px;
+            min-height: 100vh;
+            font-size: 12px;
+        }
+
+        .container {
+            max-width: 1900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+        }
+
+        .header h1 {
+            font-size: 22px;
+            margin-bottom: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: color 0.2s ease;
+            display: inline-block;
+        }
+
+        .header h1:hover {
+            color: rgba(255,255,255,0.8);
+        }
+
+        .edit-title-btn {
+            display: inline-block;
+            margin-left: 10px;
+            padding: 4px 10px;
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.5);
+            border-radius: 4px;
+            color: white;
+            cursor: pointer;
+            font-size: 11px;
+            transition: all 0.2s ease;
+        }
+
+        .edit-title-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 12px;
+        }
+
+        .project-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .project-name {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .last-saved {
+            font-size: 10px;
+            opacity: 0.7;
+        }
+
+        .controls {
+            padding: 15px 30px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .btn-secondary:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+            padding: 6px 12px;
+            font-size: 11px;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .btn-small {
+            padding: 4px 8px;
+            font-size: 10px;
+            border-radius: 4px;
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+            padding: 4px 8px;
+            font-size: 10px;
+            border-radius: 4px;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+        }
+
+        .btn-warning {
+            background: #ffc107;
+            color: #333;
+        }
+
+        .btn-warning:hover {
+            background: #e0a800;
+        }
+
+        .toggle-switch {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-left: auto;
+            font-size: 12px;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 20px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 20px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 14px;
+            width: 14px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #667eea;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(24px);
+        }
+
+        .gantt-container {
+            padding: 20px;
+            overflow-x: auto;
+            overflow-y: auto;
+            max-height: 65vh;
+        }
+
+        .gantt-chart {
+            min-width: 100%;
+            position: relative;
+        }
+
+        .gantt-header {
+            display: flex;
+            border-bottom: 2px solid #667eea;
+            margin-bottom: 5px;
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 10;
+        }
+
+        .gantt-label-col {
+            min-width: 280px;
+            padding: 10px;
+            font-weight: 600;
+            color: #333;
+            font-size: 11px;
+        }
+
+        .gantt-timeline-col {
+            flex: 1;
+            min-width: 1600px;
+        }
+
+        .timeline-months {
+            display: flex;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .gantt-month {
+            flex: 1;
+            text-align: center;
+            padding: 8px 4px;
+            border-left: 1px solid #e0e0e0;
+            font-size: 11px;
+            font-weight: 600;
+            color: #667eea;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .timeline-weeks {
+            display: flex;
+            height: 25px;
+        }
+
+        .week-marker {
+            flex: 1;
+            border-left: 1px solid #e8e8e8;
+            font-size: 9px;
+            text-align: center;
+            padding-top: 2px;
+            color: #999;
+        }
+
+        .week-marker:nth-child(4n) {
+            border-left: 1px solid #ccc;
+        }
+
+        .gantt-row {
+            display: flex;
+            min-height: 38px;
+            border-bottom: 1px solid #f0f0f0;
+            align-items: center;
+            transition: background 0.2s ease;
+        }
+
+        .gantt-row:hover {
+            background: #f8f9ff;
+        }
+
+        .gantt-row:hover .row-actions {
+            opacity: 1;
+        }
+
+        .gantt-row.milestone {
+            background: #fff8e1;
+        }
+
+        .gantt-row.milestone:hover {
+            background: #fff3cd;
+        }
+
+        .gantt-row.closed {
+            background: #f5f5f5;
+        }
+
+        .gantt-row.closed:hover {
+            background: #ececec;
+        }
+
+        .gantt-label {
+            min-width: 280px;
+            max-width: 280px;
+            padding: 8px 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            justify-content: space-between;
+        }
+
+        .task-info {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            min-width: 0;
+            overflow: hidden;
+        }
+
+        .task-content {
+            min-width: 0;
+            flex: 1;
+        }
+
+        .task-name {
+            font-weight: 500;
+            color: #333;
+            font-size: 11px;
+            line-height: 1.3;
+            cursor: pointer;
+            transition: color 0.2s ease;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .task-name:hover {
+            color: #667eea;
+        }
+
+        .task-name.milestone {
+            color: #f57c00;
+            font-weight: 600;
+        }
+
+        .task-name.subtask {
+            padding-left: 16px;
+            font-size: 10px;
+            color: #666;
+        }
+
+        .task-name.closed {
+            text-decoration: line-through;
+            opacity: 0.5;
+            color: #999;
+        }
+
+        .task-dates {
+            font-size: 9px;
+            color: #999;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 200px;
+        }
+
+        .task-dates.closed {
+            opacity: 0.5;
+        }
+
+        .row-actions {
+            display: flex;
+            gap: 4px;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .gantt-timeline {
+            flex: 1;
+            position: relative;
+            min-width: 1600px;
+            height: 38px;
+            overflow: hidden;
+        }
+
+        .gantt-bar {
+            position: absolute;
+            height: 24px;
+            top: 7px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            padding: 0 8px;
+            font-size: 10px;
+            color: white;
+            font-weight: 500;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease;
+            cursor: pointer;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            min-width: 2px;
+            max-width: 100%;
+        }
+
+        .gantt-bar:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            z-index: 5;
+        }
+
+        .gantt-bar.phase1 {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+        }
+
+        .gantt-bar.phase2 {
+            background: linear-gradient(135deg, #2196F3, #1976D2);
+        }
+
+        .gantt-bar.phase3 {
+            background: linear-gradient(135deg, #FF9800, #F57C00);
+        }
+
+        .gantt-bar.milestone {
+            background: linear-gradient(135deg, #f57c00, #ef6c00);
+            height: 30px;
+            top: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            min-width: 40px;
+        }
+
+        .gantt-bar.closed {
+            opacity: 0.4;
+            background: #999 !important;
+        }
+
+        .milestone-diamond {
+            width: 20px;
+            height: 20px;
+            background: #fff;
+            transform: rotate(45deg);
+            border: 3px solid #ef6c00;
+            flex-shrink: 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .add-task-row {
+            padding: 10px;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 11px;
+        }
+
+        .analytics {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-top: 1px solid #e0e0e0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .analytics-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .analytics-card h3 {
+            font-size: 11px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .analytics-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 4px;
+        }
+
+        .analytics-label {
+            font-size: 10px;
+            color: #999;
+        }
+
+        .phase-breakdown {
+            display: flex;
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        .phase-item {
+            flex: 1;
+            text-align: center;
+        }
+
+        .phase-number {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .phase-number.phase1 { color: #4CAF50; }
+        .phase-number.phase2 { color: #2196F3; }
+        .phase-number.phase3 { color: #FF9800; }
+
+        .phase-label {
+            font-size: 9px;
+            color: #666;
+            margin-top: 2px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 25px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            margin-bottom: 15px;
+        }
+
+        .modal-header h2 {
+            color: #667eea;
+            font-size: 20px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 20px;
+        }
+
+        .close:hover {
+            color: #000;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+            color: #333;
+            font-size: 12px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 12px;
+            transition: border 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .legend {
+            display: flex;
+            gap: 15px;
+            padding: 12px 30px;
+            background: #f8f9fa;
+            border-top: 1px solid #e0e0e0;
+            flex-wrap: wrap;
+            font-size: 11px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .legend-color {
+            width: 24px;
+            height: 16px;
+            border-radius: 3px;
+        }
+
+        .startup-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .startup-content {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .startup-content h1 {
+            color: #667eea;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .startup-content p {
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .startup-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .startup-btn {
+            padding: 15px 30px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .startup-btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .startup-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .startup-btn-secondary {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .startup-btn-secondary:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .export-menu-item {
+            width: 100%;
+            text-align: left;
+            padding: 10px 20px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 12px;
+            transition: background 0.2s;
+            font-family: inherit;
+        }
+
+        .export-menu-item:hover {
+            background: #f0f0f0;
+        }
+
+        .auto-save-indicator {
+            display: inline-block;
+            padding: 4px 8px;
+            background: rgba(40, 167, 69, 0.2);
+            color: #28a745;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        @media print {
+            @page {
+                size: landscape;
+                margin: 0.5in;
+            }
+            
+            body {
+                background: white;
+                padding: 0;
+                transform: scale(0.55);
+                transform-origin: top left;
+                width: 181.82%;
+                height: 181.82%;
+            }
+            
+            .container {
+                box-shadow: none;
+                border-radius: 0;
+                max-width: 100%;
+            }
+            
+            .controls, .row-actions, .add-task-row {
+                display: none;
+            }
+            
+            .edit-title-btn {
+                display: none;
+            }
+            
+            .header {
+                padding: 15px 20px;
+                page-break-after: avoid;
+            }
+            
+            .header h1 {
+                font-size: 18px;
+            }
+            
+            .header p {
+                font-size: 10px;
+            }
+            
+            .gantt-container {
+                max-height: none;
+                overflow: visible;
+                padding: 10px 5px 10px 10px;
+            }
+            
+            .gantt-chart {
+                page-break-inside: avoid;
+                width: 100%;
+            }
+            
+            .gantt-row {
+                page-break-inside: avoid;
+                min-height: 32px;
+                display: flex;
+                width: 100%;
+                gap: 0;
+            }
+            
+            .gantt-header {
+                display: flex;
+                width: 100%;
+                gap: 0;
+            }
+            
+            .gantt-label {
+                min-width: 220px;
+                max-width: 220px;
+                padding: 6px 8px 6px 4px;
+            }
+            
+            .gantt-label-col {
+                min-width: 220px;
+                padding: 10px 5px;
+            }
+            
+            .task-name {
+                font-size: 9px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                line-height: 1.2;
+            }
+            
+            .task-dates {
+                font-size: 7px;
+                white-space: nowrap;
+            }
+            
+            .gantt-month {
+                font-size: 10px;
+                padding: 6px;
+                flex: 1;
+            }
+            
+            .timeline-months {
+                display: flex;
+                width: 100%;
+            }
+            
+            .timeline-weeks {
+                display: flex;
+                width: 100%;
+            }
+            
+            .week-marker {
+                font-size: 8px;
+                flex: 1;
+            }
+            
+            .gantt-timeline {
+                min-width: auto;
+                flex: 1;
+                overflow: hidden;
+            }
+            
+            .gantt-timeline-col {
+                min-width: auto;
+                flex: 1;
+                margin-left: 0;
+            }
+            
+            .gantt-bar {
+                height: 20px;
+                top: 6px;
+                min-width: 2px;
+            }
+            
+            .gantt-bar.milestone {
+                height: 24px;
+                top: 4px;
+                min-width: 30px;
+            }
+            
+            .milestone-diamond {
+                width: 16px;
+                height: 16px;
+                border: 2px solid #ef6c00;
+            }
+            
+            .analytics {
+                page-break-before: avoid;
+                padding: 15px 20px;
+                gap: 10px;
+                display: grid !important;
+            }
+            
+            .analytics-card {
+                padding: 12px;
+            }
+            
+            .analytics-value {
+                font-size: 18px;
+            }
+            
+            .phase-number {
+                font-size: 14px;
+            }
+            
+            .legend {
+                padding: 10px 20px;
+                page-break-before: avoid;
+                font-size: 10px;
+            }
+            
+            .legend-item {
+                gap: 5px;
+            }
+            
+            .legend-color {
+                width: 20px;
+                height: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="startupScreen" class="startup-screen" style="display: none;">
+        <div class="startup-content">
+            <h1>📊 Gantt Chart Pro</h1>
+            <p>Offline project management with powerful Gantt charts</p>
+            <div class="startup-buttons">
+                <button class="startup-btn startup-btn-primary" onclick="startNewProject()">
+                    ➕ Create New Project
+                </button>
+                <button class="startup-btn startup-btn-primary" onclick="loadProjectStartup()">
+                    📂 Open Existing Project
+                </button>
+                <label class="startup-btn startup-btn-secondary" style="cursor: pointer; margin: 0;">
+                    📊 Import from Excel
+                    <input type="file" id="startupExcelFile" accept=".xls,.xlsx" style="display: none;" onchange="importFromExcelStartup(event)">
+                </label>
+            </div>
+            <p style="font-size: 10px; color: #999; margin-top: 20px; opacity: 0.7;">
+                💡 All data stays on your device • No cloud • Complete privacy
+            </p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1 id="chartTitle" onclick="editChartTitle()">Project Gantt Chart</h1>
+            <button class="edit-title-btn" onclick="editChartTitle()">✎ Edit</button>
+            <p>Offline-first project management • Auto-saves to your device • Complete privacy</p>
+            <div class="project-info">
+                <div class="project-name">
+                    Project: <span id="projectNameDisplay">Untitled Project</span>
+                    <button class="edit-title-btn" onclick="editProjectName()" style="margin-left: 5px;">✎</button>
+                    <span id="folderStatus" style="margin-left: 10px; font-size: 10px; opacity: 0.7;"></span>
+                </div>
+                <div class="last-saved">
+                    <span class="auto-save-indicator">● AUTO-SAVED</span>
+                    <span id="lastSaved"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="btn btn-primary" onclick="showAddTaskModal()">
+                ➕ Add Task
+            </button>
+            <button class="btn btn-primary" onclick="showAddTaskModal('milestone')">
+                🎯 Add Milestone
+            </button>
+            
+            <div style="border-left: 2px solid #ddd; height: 30px; margin: 0 5px;"></div>
+            
+            <button class="btn btn-success" onclick="saveProjectToFile()">
+                💾 Save Project
+            </button>
+            <button class="btn btn-warning" onclick="loadProject()">
+                📂 Load Project
+            </button>
+            
+            <div style="border-left: 2px solid #ddd; height: 30px; margin: 0 5px;"></div>
+            
+            <label class="btn btn-secondary" style="cursor: pointer; margin: 0;">
+                📊 Import Excel
+                <input type="file" id="fileInput" accept=".xls,.xlsx" style="display: none;" onchange="importFromExcel(event)">
+            </label>
+            <button class="btn btn-secondary" onclick="showExportMenu(event)">
+                📤 Export ▼
+            </button>
+            <button class="btn btn-secondary" onclick="window.print()">
+                🖨️ Print
+            </button>
+            
+            <div style="border-left: 2px solid #ddd; height: 30px; margin: 0 5px;"></div>
+            
+            <button class="btn btn-danger" onclick="newProject()">
+                🆕 New Project
+            </button>
+            <button class="btn btn-secondary" onclick="toggleAnalytics(event)">
+                📊 Analytics
+            </button>
+            
+            <div class="toggle-switch">
+                <span>Business Days</span>
+                <label class="switch">
+                    <input type="checkbox" id="businessDaysToggle" onchange="toggleBusinessDays()">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Export dropdown menu -->
+        <div id="exportMenu" style="display: none; position: absolute; background: white; border: 2px solid #667eea; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 100; min-width: 180px;">
+            <div style="padding: 8px 0;">
+                <button class="export-menu-item" onclick="exportToCSV(); closeExportMenu();">
+                    📊 Export as CSV
+                </button>
+                <button class="export-menu-item" onclick="exportToExcel(); closeExportMenu();">
+                    📈 Export as Excel
+                </button>
+                <button class="export-menu-item" onclick="exportToJSON(); closeExportMenu();">
+                    💾 Export as JSON
+                </button>
+            </div>
+        </div>
+
+        <div class="gantt-container" id="ganttContainer">
+            <!-- Gantt chart will be rendered here -->
+        </div>
+
+        <div class="analytics" id="analyticsContainer">
+            <!-- Analytics will be rendered here -->
+        </div>
+
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color" style="background: linear-gradient(135deg, #4CAF50, #45a049);"></div>
+                <span>Pre-Implementation</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: linear-gradient(135deg, #2196F3, #1976D2);"></div>
+                <span>Implementation</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: linear-gradient(135deg, #FF9800, #F57C00);"></div>
+                <span>Post-Implementation</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: linear-gradient(135deg, #f57c00, #ef6c00);"></div>
+                <span>Milestone</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Task Modal -->
+    <div id="taskModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <h2 id="modalTitle">Add New Task</h2>
+            </div>
+            <form id="taskForm" onsubmit="addTask(event)">
+                <div class="form-group">
+                    <label for="taskName">Task Name *</label>
+                    <input type="text" id="taskName" required>
+                </div>
+                <div class="form-group">
+                    <label for="taskType">Type *</label>
+                    <select id="taskType" required>
+                        <option value="task">Task</option>
+                        <option value="subtask">Subtask</option>
+                        <option value="milestone">Milestone</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="taskPhase">Phase *</label>
+                    <select id="taskPhase" required>
+                        <option value="phase1">Pre-Implementation</option>
+                        <option value="phase2">Implementation</option>
+                        <option value="phase3">Post-Implementation</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="startDate">Start Date *</label>
+                    <input type="date" id="startDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="endDate">End Date *</label>
+                    <input type="date" id="endDate" required>
+                </div>
+                <button type="submit" class="btn btn-primary" id="submitBtn" style="width: 100%;">Add Task</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 
+    FOR 100% OFFLINE USE:
+    1. Download: https://cdn.sheetjs.com/xlsx-0.18.5/package/dist/xlsx.full.min.js
+    2. Save as 'xlsx.full.min.js' in same folder as this HTML file
+    3. Comment out the CDN line above and uncomment the line below:
+    -->
+    <!-- <script src="./xlsx.full.min.js"></script> -->
+    
+    <!-- CDN version (requires internet for Excel import/export only) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script>
+        let tasks = [];
+        let useBusinessDays = false;
+        let editingIndex = null;
+        let showAnalytics = true;
+        let projectName = 'Untitled Project';
+        let chartTitle = 'Project Gantt Chart';
+
+        // Simplified load project - auto-detects best method
+        async function loadProject() {
+            if ('showDirectoryPicker' in window && projectFolderHandle) {
+                // If we have a folder, browse it
+                await browseProjectFolder();
+            } else if ('showDirectoryPicker' in window) {
+                // First time with File System API - offer to set folder
+                const choice = confirm('Would you like to set up a project folder for easy access?\n\nClick OK to choose a folder, or Cancel to load a single file.');
+                if (choice) {
+                    projectFolderHandle = await selectProjectFolder();
+                    if (projectFolderHandle) {
+                        await browseProjectFolder();
+                    }
+                } else {
+                    // Load single file
+                    document.getElementById('loadProjectFileMain').click();
+                }
+            } else {
+                // Fallback to file picker
+                document.getElementById('loadProjectFileMain').click();
+            }
+        }
+
+        // Hidden file input for fallback
+        function createHiddenFileInput() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            input.style.display = 'none';
+            input.id = 'loadProjectFileMain';
+            input.onchange = loadProjectFromFile;
+            document.body.appendChild(input);
+        }
+
+        // Export menu functions
+        function showExportMenu(event) {
+            const menu = document.getElementById('exportMenu');
+            const button = event.target;
+            const rect = button.getBoundingClientRect();
+            
+            menu.style.display = 'block';
+            menu.style.left = rect.left + 'px';
+            menu.style.top = (rect.bottom + 5) + 'px';
+        }
+
+        function closeExportMenu() {
+            document.getElementById('exportMenu').style.display = 'none';
+        }
+
+        function exportToJSON() {
+            saveProjectToFile();
+        }
+
+        // Close export menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const menu = document.getElementById('exportMenu');
+            const exportBtn = event.target.closest('[onclick*="showExportMenu"]');
+            
+            if (menu.style.display === 'block' && !menu.contains(event.target) && !exportBtn) {
+                closeExportMenu();
+            }
+        });
+
+        async function loadProjectStartup() {
+            hideStartupScreen();
+            await loadProject();
+        }
+
+        async function browseProjectFolderStartup() {
+            await browseProjectFolder();
+        }
+
+        async function browseProjectFolder() {
+            if (!('showDirectoryPicker' in window)) {
+                alert('Your browser does not support folder access. Please use "Load from File" instead.');
+                return;
+            }
+
+            try {
+                // If no folder selected, prompt user
+                if (!projectFolderHandle) {
+                    projectFolderHandle = await selectProjectFolder();
+                    if (!projectFolderHandle) {
+                        return;
+                    }
+                } else {
+                    // Update status display
+                    updateFolderStatus(projectFolderHandle.name);
+                }
+
+                // Verify permission
+                const permission = await projectFolderHandle.queryPermission({ mode: 'readwrite' });
+                if (permission !== 'granted') {
+                    const newPermission = await projectFolderHandle.requestPermission({ mode: 'readwrite' });
+                    if (newPermission !== 'granted') {
+                        alert('Permission denied to access folder.');
+                        return;
+                    }
+                }
+
+                // List all JSON files
+                const files = [];
+                for await (const entry of projectFolderHandle.values()) {
+                    if (entry.kind === 'file' && entry.name.endsWith('.json')) {
+                        files.push(entry);
+                    }
+                }
+
+                if (files.length === 0) {
+                    alert('No project files (.json) found in this folder.');
+                    return;
+                }
+
+                // Create a selection dialog
+                let fileList = 'Select a project to load:\n\n';
+                files.forEach((file, index) => {
+                    fileList += `${index + 1}. ${file.name}\n`;
+                });
+                fileList += '\nEnter the number of the project to load:';
+
+                const selection = prompt(fileList);
+                if (!selection) return;
+
+                const index = parseInt(selection) - 1;
+                if (index < 0 || index >= files.length) {
+                    alert('Invalid selection.');
+                    return;
+                }
+
+                // Load the selected file
+                const fileHandle = files[index];
+                const file = await fileHandle.getFile();
+                const text = await file.text();
+                
+                try {
+                    const projectData = JSON.parse(text);
+                    
+                    projectName = projectData.projectName || 'Imported Project';
+                    chartTitle = projectData.chartTitle || 'Project Gantt Chart';
+                    tasks = projectData.tasks || [];
+                    useBusinessDays = projectData.useBusinessDays || false;
+                    
+                    document.getElementById('projectNameDisplay').textContent = projectName;
+                    document.getElementById('chartTitle').textContent = chartTitle;
+                    document.getElementById('businessDaysToggle').checked = useBusinessDays;
+                    
+                    saveToLocalStorage();
+                    hideStartupScreen();
+                    renderGanttChart();
+                    
+                    alert(`✅ Project "${projectName}" loaded successfully!`);
+                } catch (error) {
+                    alert('Error loading project: ' + error.message);
+                }
+            } catch (e) {
+                console.error('Error browsing folder:', e);
+                alert('Error accessing project folder.');
+            }
+        }
+
+        // Initialize app
+        function initApp() {
+            initializeProjectFolder();
+            createHiddenFileInput();
+            
+            const hasData = loadFromLocalStorage();
+            if (!hasData) {
+                showStartupScreen();
+            } else {
+                updateLastSaved();
+                renderGanttChart();
+            }
+        }
+
+        function showStartupScreen() {
+            document.getElementById('startupScreen').style.display = 'flex';
+        }
+
+        function hideStartupScreen() {
+            document.getElementById('startupScreen').style.display = 'none';
+        }
+
+        function startNewProject() {
+            projectName = prompt('Enter project name:', 'New Project') || 'Untitled Project';
+            tasks = [];
+            hideStartupScreen();
+            saveToLocalStorage();
+            renderGanttChart();
+        }
+
+        function newProject() {
+            if (confirm('Start a new project? Current project will be saved to localStorage.')) {
+                startNewProject();
+            }
+        }
+
+        function editProjectName() {
+            const newName = prompt('Enter project name:', projectName);
+            if (newName && newName.trim()) {
+                projectName = newName.trim();
+                document.getElementById('projectNameDisplay').textContent = projectName;
+                saveToLocalStorage();
+            }
+        }
+
+        // Auto-save to localStorage
+        function saveToLocalStorage() {
+            const projectData = {
+                projectName,
+                chartTitle,
+                tasks,
+                useBusinessDays,
+                lastSaved: new Date().toISOString()
+            };
+            localStorage.setItem('ganttChartProject', JSON.stringify(projectData));
+            updateLastSaved();
+        }
+
+        function loadFromLocalStorage() {
+            try {
+                const data = localStorage.getItem('ganttChartProject');
+                if (data) {
+                    const projectData = JSON.parse(data);
+                    projectName = projectData.projectName || 'Untitled Project';
+                    chartTitle = projectData.chartTitle || 'Project Gantt Chart';
+                    tasks = projectData.tasks || [];
+                    useBusinessDays = projectData.useBusinessDays || false;
+                    
+                    document.getElementById('projectNameDisplay').textContent = projectName;
+                    document.getElementById('chartTitle').textContent = chartTitle;
+                    document.getElementById('businessDaysToggle').checked = useBusinessDays;
+                    
+                    return true;
+                }
+            } catch (e) {
+                console.error('Error loading from localStorage:', e);
+            }
+            return false;
+        }
+
+        function updateLastSaved() {
+            try {
+                const data = localStorage.getItem('ganttChartProject');
+                if (data) {
+                    const projectData = JSON.parse(data);
+                    const lastSaved = new Date(projectData.lastSaved);
+                    document.getElementById('lastSaved').textContent = 
+                        'Last saved: ' + lastSaved.toLocaleString();
+                }
+            } catch (e) {
+                document.getElementById('lastSaved').textContent = 'Last saved: Just now';
+            }
+        }
+
+        // File System Access API support
+        let projectFolderHandle = null;
+
+        async function initializeProjectFolder() {
+            try {
+                // Check if we have a stored folder handle
+                const storedHandle = localStorage.getItem('projectFolderHandle');
+                if (storedHandle && 'showDirectoryPicker' in window) {
+                    // Try to verify we still have permission
+                    const handles = await navigator.storage.getDirectory();
+                    // We'll prompt again if needed
+                }
+            } catch (e) {
+                console.log('No stored folder handle or permission denied');
+            }
+        }
+
+        async function selectProjectFolder() {
+            if (!('showDirectoryPicker' in window)) {
+                alert('Your browser does not support folder access. Files will be downloaded to your default Downloads folder.');
+                return null;
+            }
+
+            try {
+                const dirHandle = await window.showDirectoryPicker({
+                    mode: 'readwrite',
+                    startIn: 'documents'
+                });
+                projectFolderHandle = dirHandle;
+                updateFolderStatus(dirHandle.name);
+                alert(`✅ Project folder set to: ${dirHandle.name}\n\nAll projects will now be saved here automatically!`);
+                return dirHandle;
+            } catch (e) {
+                if (e.name !== 'AbortError') {
+                    console.error('Error selecting folder:', e);
+                }
+                return null;
+            }
+        }
+
+        function updateFolderStatus(folderName) {
+            const statusEl = document.getElementById('folderStatus');
+            if (statusEl && folderName) {
+                statusEl.innerHTML = `📁 <strong>${folderName}</strong>`;
+                statusEl.style.color = '#28a745';
+                statusEl.title = 'Project folder is set - saves will go here automatically';
+            }
+        }
+
+        // Save project as JSON file
+        async function saveProjectToFile() {
+            const projectData = {
+                projectName,
+                chartTitle,
+                tasks,
+                useBusinessDays,
+                exportDate: new Date().toISOString(),
+                version: '1.0'
+            };
+            
+            const json = JSON.stringify(projectData, null, 2);
+            const filename = `${projectName.replace(/[^a-z0-9]/gi, '_')}_${new Date().toISOString().split('T')[0]}.json`;
+
+            // Try to use File System Access API
+            if ('showDirectoryPicker' in window) {
+                try {
+                    // If no folder selected, prompt user
+                    if (!projectFolderHandle) {
+                        projectFolderHandle = await selectProjectFolder();
+                        if (!projectFolderHandle) {
+                            // User cancelled, fall back to download
+                            downloadFile(json, filename, 'application/json');
+                            return;
+                        }
+                    } else {
+                        // Update status display if we have a handle
+                        updateFolderStatus(projectFolderHandle.name);
+                    }
+
+                    // Verify we still have permission
+                    const permission = await projectFolderHandle.queryPermission({ mode: 'readwrite' });
+                    if (permission !== 'granted') {
+                        const newPermission = await projectFolderHandle.requestPermission({ mode: 'readwrite' });
+                        if (newPermission !== 'granted') {
+                            alert('Permission denied. File will be downloaded instead.');
+                            downloadFile(json, filename, 'application/json');
+                            return;
+                        }
+                    }
+
+                    // Create/overwrite the file in the selected folder
+                    const fileHandle = await projectFolderHandle.getFileHandle(filename, { create: true });
+                    const writable = await fileHandle.createWritable();
+                    await writable.write(json);
+                    await writable.close();
+
+                    alert(`✅ Project saved to:\n${projectFolderHandle.name}/${filename}`);
+                } catch (e) {
+                    console.error('Error saving to folder:', e);
+                    alert('Error saving to folder. Downloading file instead.');
+                    downloadFile(json, filename, 'application/json');
+                }
+            } else {
+                // Fallback for browsers without File System Access API
+                downloadFile(json, filename, 'application/json');
+                alert('Project saved to Downloads folder. (Your browser doesn\'t support direct folder access)');
+            }
+        }
+
+        // Load project from JSON file
+        function loadProjectFromFile(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const projectData = JSON.parse(e.target.result);
+                    
+                    projectName = projectData.projectName || 'Imported Project';
+                    chartTitle = projectData.chartTitle || 'Project Gantt Chart';
+                    tasks = projectData.tasks || [];
+                    useBusinessDays = projectData.useBusinessDays || false;
+                    
+                    document.getElementById('projectNameDisplay').textContent = projectName;
+                    document.getElementById('chartTitle').textContent = chartTitle;
+                    document.getElementById('businessDaysToggle').checked = useBusinessDays;
+                    
+                    saveToLocalStorage();
+                    hideStartupScreen();
+                    renderGanttChart();
+                    
+                    alert(`Project "${projectName}" loaded successfully!`);
+                } catch (error) {
+                    alert('Error loading project file: ' + error.message);
+                    console.error(error);
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
+        }
+
+        function importFromExcelStartup(event) {
+            importFromExcel(event);
+            hideStartupScreen();
+        }
+
+        function toggleTaskStatus(index) {
+            const task = tasks[index];
+            task.status = task.status === 'closed' ? 'open' : 'closed';
+            saveToLocalStorage();
+            renderGanttChart();
+        }
+
+        function renderAnalytics() {
+            const analyticsContainer = document.getElementById('analyticsContainer');
+            
+            if (tasks.length === 0) {
+                analyticsContainer.innerHTML = '';
+                return;
+            }
+            
+            const totalTasks = tasks.filter(t => t.type === 'task').length;
+            const totalSubtasks = tasks.filter(t => t.type === 'subtask').length;
+            const totalMilestones = tasks.filter(t => t.type === 'milestone').length;
+            
+            const openTasks = tasks.filter(t => t.status === 'open').length;
+            const closedTasks = tasks.filter(t => t.status === 'closed').length;
+            const completionPercent = tasks.length > 0 ? Math.round((closedTasks / tasks.length) * 100) : 0;
+            
+            const phase1Count = tasks.filter(t => t.phase === 'phase1').length;
+            const phase2Count = tasks.filter(t => t.phase === 'phase2').length;
+            const phase3Count = tasks.filter(t => t.phase === 'phase3').length;
+            
+            const allDates = tasks.map(t => new Date(t.start));
+            const allEndDates = tasks.map(t => new Date(t.end));
+            const projectStart = new Date(Math.min(...allDates));
+            const projectEnd = new Date(Math.max(...allEndDates));
+            
+            const durationDays = useBusinessDays ? 
+                calculateBusinessDays(projectStart, projectEnd) :
+                Math.ceil((projectEnd - projectStart) / (1000 * 60 * 60 * 24));
+            const durationMonths = Math.round(durationDays / (useBusinessDays ? 21 : 30.44));
+            
+            const today = new Date();
+            let currentPhase = 'Not Started';
+            if (today >= projectStart && today <= projectEnd) {
+                const phase1Tasks = tasks.filter(t => t.phase === 'phase1');
+                const phase2Tasks = tasks.filter(t => t.phase === 'phase2');
+                const phase3Tasks = tasks.filter(t => t.phase === 'phase3');
+                
+                if (phase3Tasks.some(t => new Date(t.start) <= today)) {
+                    currentPhase = 'Post-Implementation';
+                } else if (phase2Tasks.some(t => new Date(t.start) <= today)) {
+                    currentPhase = 'Implementation';
+                } else {
+                    currentPhase = 'Pre-Implementation';
+                }
+            } else if (today > projectEnd) {
+                currentPhase = 'Completed';
+            }
+            
+            let html = `
+                <div class="analytics-card">
+                    <h3>Total Items</h3>
+                    <div class="analytics-value">${tasks.length}</div>
+                    <div class="analytics-label">${totalTasks} Tasks · ${totalSubtasks} Subtasks · ${totalMilestones} Milestones</div>
+                </div>
+                
+                <div class="analytics-card">
+                    <h3>Completion Status</h3>
+                    <div class="analytics-value">${completionPercent}%</div>
+                    <div class="analytics-label">${closedTasks} Closed · ${openTasks} Open</div>
+                </div>
+                
+                <div class="analytics-card">
+                    <h3>Project Duration</h3>
+                    <div class="analytics-value">${durationMonths}</div>
+                    <div class="analytics-label">Months (${durationDays} ${useBusinessDays ? 'business' : 'calendar'} days)</div>
+                </div>
+                
+                <div class="analytics-card">
+                    <h3>Timeline</h3>
+                    <div class="analytics-value" style="font-size: 16px;">${projectStart.toLocaleDateString('en-US', {month: 'short', year: 'numeric'})}</div>
+                    <div class="analytics-label">to ${projectEnd.toLocaleDateString('en-US', {month: 'short', year: 'numeric'})}</div>
+                </div>
+                
+                <div class="analytics-card">
+                    <h3>Phase Distribution</h3>
+                    <div class="phase-breakdown">
+                        <div class="phase-item">
+                            <div class="phase-number phase1">${phase1Count}</div>
+                            <div class="phase-label">Pre-Impl</div>
+                        </div>
+                        <div class="phase-item">
+                            <div class="phase-number phase2">${phase2Count}</div>
+                            <div class="phase-label">Impl</div>
+                        </div>
+                        <div class="phase-item">
+                            <div class="phase-number phase3">${phase3Count}</div>
+                            <div class="phase-label">Post-Impl</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="analytics-card">
+                    <h3>Current Status</h3>
+                    <div class="analytics-value" style="font-size: 16px;">${currentPhase}</div>
+                    <div class="analytics-label">As of ${today.toLocaleDateString('en-US', {month: 'short', day: 'numeric', year: 'numeric'})}</div>
+                </div>
+            `;
+            
+            analyticsContainer.innerHTML = html;
+        }
+
+        function renderGanttChart() {
+            const container = document.getElementById('ganttContainer');
+            
+            if (tasks.length === 0) {
+                container.innerHTML = '<div style="padding: 40px; text-align: center; color: #999;">No tasks to display. Click "Add Task" or "Import XLS" to get started.</div>';
+                renderAnalytics();
+                return;
+            }
+            
+            const allDates = tasks.map(t => new Date(t.start + 'T00:00:00'));
+            const allEndDates = tasks.map(t => new Date(t.end + 'T00:00:00'));
+            
+            const firstTaskDate = new Date(Math.min(...allDates));
+            const lastTaskDate = new Date(Math.max(...allEndDates));
+            
+            const timelineStart = new Date(firstTaskDate.getFullYear(), firstTaskDate.getMonth(), 1);
+            const timelineEnd = new Date(lastTaskDate);
+            timelineEnd.setDate(timelineEnd.getDate() + 21);
+            
+            const months = generateMonths(timelineStart, timelineEnd);
+            const weeks = generateWeeks(timelineStart, timelineEnd);
+            
+            const msPerDay = 1000 * 60 * 60 * 24;
+            const totalDays = useBusinessDays ? 
+                calculateBusinessDays(timelineStart, timelineEnd) :
+                Math.round((timelineEnd.getTime() - timelineStart.getTime()) / msPerDay);
+            
+            let html = '<div class="gantt-chart">';
+            
+            html += '<div class="gantt-header">';
+            html += '<div class="gantt-label-col">Task Name</div>';
+            html += '<div class="gantt-timeline-col">';
+            html += '<div class="timeline-months">';
+            months.forEach(month => {
+                html += `<div class="gantt-month" style="flex: ${month.weeks};">${month.label}</div>`;
+            });
+            html += '</div>';
+            
+            html += '<div class="timeline-weeks">';
+            weeks.forEach((week, i) => {
+                html += `<div class="week-marker">${i % 4 === 0 ? week : ''}</div>`;
+            });
+            html += '</div>';
+            html += '</div></div>';
+            
+            html += '<div class="add-task-row">';
+            html += '<button class="btn btn-primary btn-small" onclick="showAddTaskModal()">+ Task</button>';
+            html += '<button class="btn btn-primary btn-small" onclick="showAddTaskModal(\'subtask\')">+ Subtask</button>';
+            html += '<button class="btn btn-primary btn-small" onclick="showAddTaskModal(\'milestone\')">+ Milestone</button>';
+            html += '</div>';
+            
+            tasks.forEach((task, index) => {
+                const taskStart = new Date(task.start + 'T00:00:00');
+                const taskEnd = new Date(task.end + 'T00:00:00');
+                
+                taskStart.setHours(12, 0, 0, 0);
+                taskEnd.setHours(12, 0, 0, 0);
+                const refStart = new Date(timelineStart);
+                refStart.setHours(12, 0, 0, 0);
+                const refEnd = new Date(timelineEnd);
+                refEnd.setHours(12, 0, 0, 0);
+                
+                let daysFromStart, taskDuration;
+                
+                if (useBusinessDays) {
+                    daysFromStart = calculateBusinessDays(refStart, taskStart);
+                    taskDuration = calculateBusinessDays(taskStart, taskEnd);
+                } else {
+                    daysFromStart = Math.floor((taskStart.getTime() - refStart.getTime()) / msPerDay);
+                    taskDuration = Math.floor((taskEnd.getTime() - taskStart.getTime()) / msPerDay) + 1;
+                }
+                
+                const totalDaysCalc = useBusinessDays ? 
+                    calculateBusinessDays(refStart, refEnd) :
+                    Math.floor((refEnd.getTime() - refStart.getTime()) / msPerDay);
+                
+                const safeStartDay = Math.max(0, daysFromStart);
+                const leftPercent = (safeStartDay / totalDaysCalc) * 100;
+                let widthPercent = Math.max(0.5, (taskDuration / totalDaysCalc) * 100);
+                
+                if (leftPercent + widthPercent > 100) {
+                    widthPercent = 100 - leftPercent;
+                }
+                
+                const finalLeft = Math.max(0, Math.round(leftPercent * 100) / 100);
+                const finalWidth = Math.max(0.5, Math.round(widthPercent * 100) / 100);
+                
+                const isMilestone = task.type === 'milestone';
+                const isSubtask = task.type === 'subtask';
+                const isClosed = task.status === 'closed';
+                
+                html += `<div class="gantt-row ${isMilestone ? 'milestone' : ''} ${isClosed ? 'closed' : ''}">`;
+                html += `<div class="gantt-label">`;
+                html += `<div class="task-info">`;
+                html += `<div class="task-content">`;
+                html += `<div class="task-name ${isMilestone ? 'milestone' : ''} ${isSubtask ? 'subtask' : ''} ${isClosed ? 'closed' : ''}" onclick="editTask(${index})">${task.name}</div>`;
+                html += `<div class="task-dates ${isClosed ? 'closed' : ''}">${task.start} → ${task.end}</div>`;
+                html += `</div>`;
+                html += `</div>`;
+                html += `<div class="row-actions">`;
+                
+                if (isClosed) {
+                    html += `<button class="btn btn-success btn-small" onclick="toggleTaskStatus(${index})" title="Reopen task">↻</button>`;
+                } else {
+                    html += `<button class="btn btn-primary btn-small" onclick="toggleTaskStatus(${index})" title="Close task">✓</button>`;
+                }
+                
+                html += `<button class="btn btn-primary btn-small" onclick="editTask(${index})" title="Edit task">✎</button>`;
+                html += `<button class="btn btn-danger btn-small" onclick="deleteTask(${index})" title="Delete task">✕</button>`;
+                html += `</div>`;
+                html += `</div>`;
+                html += `<div class="gantt-timeline">`;
+                html += `<div class="gantt-bar ${task.phase} ${isMilestone ? 'milestone' : ''} ${isClosed ? 'closed' : ''}" 
+                         style="left: ${finalLeft}%; width: ${finalWidth}%;"
+                         onclick="editTask(${index})"
+                         title="${task.name}\n${task.start} to ${task.end}\nStatus: ${isClosed ? 'Closed' : 'Open'}\nClick to edit">`;
+                if (isMilestone) {
+                    html += '<div class="milestone-diamond"></div>';
+                }
+                html += `</div>`;
+                html += `</div></div>`;
+            });
+            
+            html += '</div>';
+            container.innerHTML = html;
+            
+            renderAnalytics();
+        }
+
+        function generateMonths(startDate, endDate) {
+            const months = [];
+            const current = new Date(startDate.getFullYear(), startDate.getMonth(), 1);
+            
+            while (current <= endDate) {
+                const monthName = current.toLocaleString('default', { month: 'short' });
+                const year = current.getFullYear();
+                const monthEnd = new Date(current.getFullYear(), current.getMonth() + 1, 0);
+                
+                let weeks;
+                if (useBusinessDays) {
+                    const monthStart = new Date(current.getFullYear(), current.getMonth(), 1);
+                    const businessDaysInMonth = calculateBusinessDays(monthStart, monthEnd);
+                    weeks = Math.max(1, Math.round(businessDaysInMonth / 5));
+                } else {
+                    const daysInMonth = monthEnd.getDate();
+                    weeks = Math.ceil(daysInMonth / 7);
+                }
+                
+                months.push({
+                    label: `${monthName} ${year}`,
+                    date: new Date(current),
+                    weeks: weeks
+                });
+                current.setMonth(current.getMonth() + 1);
+            }
+            
+            return months;
+        }
+
+        function generateWeeks(startDate, endDate) {
+            const weeks = [];
+            
+            if (useBusinessDays) {
+                let weekNum = 1;
+                const totalBusinessDays = calculateBusinessDays(startDate, endDate);
+                const numWeeks = Math.ceil(totalBusinessDays / 5);
+                
+                for (let i = 0; i < numWeeks; i++) {
+                    weeks.push(`W${weekNum}`);
+                    weekNum++;
+                }
+            } else {
+                const current = new Date(startDate);
+                let weekNum = 1;
+                
+                while (current <= endDate) {
+                    weeks.push(`W${weekNum}`);
+                    current.setDate(current.getDate() + 7);
+                    weekNum++;
+                }
+            }
+            
+            return weeks;
+        }
+
+        function calculateBusinessDays(startDate, endDate) {
+            let count = 0;
+            const current = new Date(startDate);
+            
+            while (current <= endDate) {
+                const dayOfWeek = current.getDay();
+                if (dayOfWeek !== 0 && dayOfWeek !== 6 && !isUSHoliday(current)) {
+                    count++;
+                }
+                current.setDate(current.getDate() + 1);
+            }
+            
+            return count;
+        }
+
+        function isUSHoliday(date) {
+            const year = date.getFullYear();
+            const month = date.getMonth();
+            const day = date.getDate();
+            const dayOfWeek = date.getDay();
+            
+            const holidays = [
+                `${year}-01-01`,
+                `${year}-07-04`,
+                `${year}-12-25`,
+            ];
+            
+            const dateStr = date.toISOString().split('T')[0];
+            if (holidays.includes(dateStr)) return true;
+            
+            if (month === 0 && dayOfWeek === 1) {
+                const weekOfMonth = Math.ceil(day / 7);
+                if (weekOfMonth === 3) return true;
+            }
+            
+            if (month === 1 && dayOfWeek === 1) {
+                const weekOfMonth = Math.ceil(day / 7);
+                if (weekOfMonth === 3) return true;
+            }
+            
+            if (month === 4 && dayOfWeek === 1) {
+                const nextWeek = new Date(date);
+                nextWeek.setDate(day + 7);
+                if (nextWeek.getMonth() !== 4) return true;
+            }
+            
+            if (month === 8 && dayOfWeek === 1 && day <= 7) {
+                return true;
+            }
+            
+            if (month === 10 && dayOfWeek === 4) {
+                const weekOfMonth = Math.ceil(day / 7);
+                if (weekOfMonth === 4) return true;
+            }
+            
+            return false;
+        }
+
+        function toggleBusinessDays() {
+            useBusinessDays = document.getElementById('businessDaysToggle').checked;
+            saveToLocalStorage();
+            renderGanttChart();
+        }
+
+        function toggleAnalytics(event) {
+            showAnalytics = !showAnalytics;
+            const analyticsContainer = document.getElementById('analyticsContainer');
+            if (analyticsContainer) {
+                analyticsContainer.style.display = showAnalytics ? 'grid' : 'none';
+                if (event && event.target) {
+                    event.target.innerHTML = showAnalytics ? '📊 Analytics' : '📊 Analytics';
+                    event.target.style.opacity = showAnalytics ? '1' : '0.6';
+                }
+            }
+        }
+
+        function deleteTask(index) {
+            if (confirm('Are you sure you want to delete this task?')) {
+                tasks.splice(index, 1);
+                saveToLocalStorage();
+                renderGanttChart();
+            }
+        }
+
+        function editTask(index) {
+            editingIndex = index;
+            const task = tasks[index];
+            
+            document.getElementById('taskName').value = task.name;
+            document.getElementById('taskType').value = task.type;
+            document.getElementById('taskPhase').value = task.phase;
+            document.getElementById('startDate').value = task.start;
+            document.getElementById('endDate').value = task.end;
+            
+            document.getElementById('modalTitle').textContent = 'Edit Task';
+            document.getElementById('submitBtn').textContent = 'Update Task';
+            document.getElementById('taskModal').style.display = 'block';
+        }
+
+        function showAddTaskModal(type = 'task') {
+            editingIndex = null;
+            document.getElementById('taskForm').reset();
+            document.getElementById('taskModal').style.display = 'block';
+            document.getElementById('taskType').value = type;
+            document.getElementById('modalTitle').textContent = 
+                type === 'milestone' ? 'Add New Milestone' : 
+                type === 'subtask' ? 'Add New Subtask' : 'Add New Task';
+            document.getElementById('submitBtn').textContent = 
+                type === 'milestone' ? 'Add Milestone' : 
+                type === 'subtask' ? 'Add Subtask' : 'Add Task';
+        }
+
+        function closeModal() {
+            document.getElementById('taskModal').style.display = 'none';
+            document.getElementById('taskForm').reset();
+            editingIndex = null;
+        }
+
+        function addTask(event) {
+            event.preventDefault();
+            
+            const taskData = {
+                name: document.getElementById('taskName').value,
+                start: document.getElementById('startDate').value,
+                end: document.getElementById('endDate').value,
+                type: document.getElementById('taskType').value,
+                phase: document.getElementById('taskPhase').value,
+                status: 'open'
+            };
+            
+            if (editingIndex !== null) {
+                taskData.status = tasks[editingIndex].status || 'open';
+                tasks[editingIndex] = taskData;
+            } else {
+                tasks.push(taskData);
+            }
+            
+            tasks.sort((a, b) => new Date(a.start) - new Date(b.start));
+            
+            saveToLocalStorage();
+            renderGanttChart();
+            closeModal();
+        }
+
+        function editChartTitle() {
+            const titleElement = document.getElementById('chartTitle');
+            const currentTitle = titleElement.textContent;
+            const newTitle = prompt('Enter new chart title:', currentTitle);
+            
+            if (newTitle !== null && newTitle.trim() !== '') {
+                chartTitle = newTitle.trim();
+                titleElement.textContent = chartTitle;
+                saveToLocalStorage();
+            }
+        }
+
+        function importFromExcel(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    
+                    const firstSheetName = workbook.SheetNames[0];
+                    const worksheet = workbook.Sheets[firstSheetName];
+                    const jsonData = XLSX.utils.sheet_to_json(worksheet);
+                    
+                    const importedTasks = [];
+                    jsonData.forEach(row => {
+                        const taskName = row['Task'] || row['Task Name'] || row['task'] || row['name'];
+                        const startDate = row['Start Date'] || row['start'] || row['Start'];
+                        const endDate = row['End Date'] || row['end'] || row['End'];
+                        const milestone = row['Milestone'] || row['milestone'];
+                        const type = row['Type'] || row['type'];
+                        const phase = row['Phase'] || row['phase'];
+                        const status = row['Status'] || row['status'];
+                        
+                        if (taskName && startDate && endDate) {
+                            let formattedStart = formatExcelDate(startDate);
+                            let formattedEnd = formatExcelDate(endDate);
+                            
+                            let taskType = 'task';
+                            if (type) {
+                                taskType = type.toLowerCase();
+                            } else if (milestone && milestone.toLowerCase().includes('milestone')) {
+                                taskType = 'milestone';
+                            } else if (taskName.toLowerCase().includes('milestone')) {
+                                taskType = 'milestone';
+                            }
+                            
+                            let taskPhase = 'phase2';
+                            if (phase) {
+                                const phaseStr = phase.toLowerCase();
+                                if (phaseStr.includes('pre') || phaseStr.includes('planning')) {
+                                    taskPhase = 'phase1';
+                                } else if (phaseStr.includes('post') || phaseStr.includes('evaluation')) {
+                                    taskPhase = 'phase3';
+                                }
+                            }
+                            
+                            let taskStatus = 'open';
+                            if (status && status.toLowerCase() === 'closed') {
+                                taskStatus = 'closed';
+                            }
+                            
+                            importedTasks.push({
+                                name: taskName,
+                                start: formattedStart,
+                                end: formattedEnd,
+                                type: taskType,
+                                phase: taskPhase,
+                                status: taskStatus
+                            });
+                        }
+                    });
+                    
+                    if (importedTasks.length > 0) {
+                        if (confirm(`Found ${importedTasks.length} tasks. Replace existing tasks?`)) {
+                            tasks = importedTasks;
+                        } else {
+                            tasks = [...tasks, ...importedTasks];
+                        }
+                        tasks.sort((a, b) => new Date(a.start) - new Date(b.start));
+                        saveToLocalStorage();
+                        renderGanttChart();
+                        alert(`Successfully imported ${importedTasks.length} tasks!`);
+                    } else {
+                        alert('No valid tasks found in the file. Please check the format.');
+                    }
+                } catch (error) {
+                    alert('Error reading file: ' + error.message);
+                    console.error(error);
+                }
+            };
+            reader.readAsArrayBuffer(file);
+            event.target.value = '';
+        }
+
+        function formatExcelDate(date) {
+            if (typeof date === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(date)) {
+                return date;
+            }
+            
+            if (typeof date === 'number') {
+                const excelEpoch = new Date(1899, 11, 30);
+                const jsDate = new Date(excelEpoch.getTime() + date * 86400000);
+                return jsDate.toISOString().split('T')[0];
+            }
+            
+            try {
+                const parsed = new Date(date);
+                if (!isNaN(parsed.getTime())) {
+                    return parsed.toISOString().split('T')[0];
+                }
+            } catch (e) {
+                console.error('Date parsing error:', e);
+            }
+            
+            return date;
+        }
+
+        function exportToCSV() {
+            let csv = 'Task Name,Type,Phase,Start Date,End Date,Status\n';
+            tasks.forEach(task => {
+                const phaseName = task.phase === 'phase1' ? 'Pre-Implementation' :
+                                task.phase === 'phase2' ? 'Implementation' : 'Post-Implementation';
+                const status = (task.status || 'open') === 'closed' ? 'Closed' : 'Open';
+                csv += `"${task.name}",${task.type},${phaseName},${task.start},${task.end},${status}\n`;
+            });
+            
+            downloadFile(csv, `${projectName.replace(/[^a-z0-9]/gi, '_')}_export.csv`, 'text/csv');
+        }
+
+        function exportToExcel() {
+            let content = 'Task Name\tType\tPhase\tStart Date\tEnd Date\tStatus\n';
+            tasks.forEach(task => {
+                const phaseName = task.phase === 'phase1' ? 'Pre-Implementation' :
+                                task.phase === 'phase2' ? 'Implementation' : 'Post-Implementation';
+                const status = (task.status || 'open') === 'closed' ? 'Closed' : 'Open';
+                content += `${task.name}\t${task.type}\t${phaseName}\t${task.start}\t${task.end}\t${status}\n`;
+            });
+            
+            downloadFile(content, `${projectName.replace(/[^a-z0-9]/gi, '_')}_export.xls`, 'application/vnd.ms-excel');
+        }
+
+        function downloadFile(content, filename, mimeType) {
+            const blob = new Blob([content], { type: mimeType });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('taskModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        // Initialize app on load
+        initApp();
+    </script>
+</body>
+</html>
